@@ -16,7 +16,7 @@ import (
 	"github.com/bhoriuchi/go-bunyan/bunyan"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"github.com/txn2/txwifi/iotwifi"
+	"github.com/mindworks-software/txnwifi/iotwifi"
 )
 
 // ApiReturn structures a message for returned API calls.
@@ -45,10 +45,9 @@ func main() {
 	messages := make(chan iotwifi.CmdMessage, 1)
 	signal := make(chan string, 1)
 
-
 	cfgUrl := setEnvIfEmpty("IOTWIFI_CFG", "cfg/wificfg.json")
 	port := setEnvIfEmpty("IOTWIFI_PORT", "8080")
-	allowKill := setEnvIfEmpty("WIFI_ALLOW_KILL","false")
+	allowKill := setEnvIfEmpty("WIFI_ALLOW_KILL", "false")
 	static := setEnvIfEmpty("IOTWIFI_STATIC", "/static/")
 	dontFallBackToAP := setEnvIfEmpty("DONT_FALL_BACK_TO_AP", "false")
 
@@ -129,7 +128,7 @@ func main() {
 		apiReturn := &ApiReturn{
 			Status:  "OK",
 			Message: "Connection",
-			Payload: "Attempting to connect to " +creds.Ssid,
+			Payload: "Attempting to connect to " + creds.Ssid,
 		}
 
 		ret, err := json.Marshal(apiReturn)

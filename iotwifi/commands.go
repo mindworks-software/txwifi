@@ -67,7 +67,6 @@ func (c *Command) StartDnsmasq() {
 		"--no-hosts", // Don't read the hostnames in /etc/hosts.
 		"--keep-in-foreground",
 		"--log-queries",
-		"--no-resolv",
 		"--address=" + c.SetupCfg.DnsmasqCfg.Address,
 		"--dhcp-range=" + c.SetupCfg.DnsmasqCfg.DhcpRange,
 		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
@@ -81,7 +80,7 @@ func (c *Command) StartDnsmasq() {
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
 }
 
-func	(c *Command) StartHostAPD(){
+func (c *Command) StartHostAPD() {
 	args := []string{
 		"/etc/hostapd/hostapd.conf",
 	}
