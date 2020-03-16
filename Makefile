@@ -1,6 +1,6 @@
-IMAGE    ?= cjimti/iotwifi
+IMAGE    ?= mindworks-software/iotwifi
 NAME     ?= txwifi
-VERSION  ?= 1.0.4
+VERSION  ?= 1.0.5
 
 all: build push
 
