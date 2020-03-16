@@ -103,15 +103,15 @@ func MonitorAPD(log bunyan.Logger, signal chan<- string, wpaSupplicantConfig str
 	var apdTimeout int64 = 90
 	staticFields := make(map[string]interface{})
 	staticFields["cmd_id"] = " ~~ apd monitor ~~"
-	log.Info(staticFields,"Start.")
+	log.Info(staticFields, "Start.")
 	for {
 		apd := apdState("uap0")
 		if apd == "ENABLED" {
 			startTime := time.Now().Unix()
-			log.Info(staticFields, apd + ", timeout in " + strconv.FormatInt(apdTimeout,10)  + " seconds")
+			log.Info(staticFields, apd+", timeout in "+strconv.FormatInt(apdTimeout, 10)+" seconds")
 			for {
 				apd = apdState("uap0")
-				if startTime + apdTimeout < time.Now().Unix() {
+				if startTime+apdTimeout < time.Now().Unix() {
 					//check to see if APD has clients, if yes, reset timer
 					if apdHasClient("uap0") {
 						log.Info(staticFields, "has client(s), timeout aborted")
@@ -127,7 +127,7 @@ func MonitorAPD(log bunyan.Logger, signal chan<- string, wpaSupplicantConfig str
 					break
 				}
 				if apd != "ENABLED" {
-					log.Info(staticFields, apd + " timeout aborted ")
+					log.Info(staticFields, apd+" timeout aborted ")
 					break
 				}
 				time.Sleep(1 * time.Second)
@@ -142,25 +142,25 @@ func MonitorWPA(log bunyan.Logger, signal chan<- string, dontFallBackToAP string
 	var wpaTimeout int64 = 90
 	staticFields := make(map[string]interface{})
 	staticFields["cmd_id"] = " ~~ wpa monitor ~~"
-	log.Info(staticFields,"Start.")
+	log.Info(staticFields, "Start.")
 	for {
 		wpa := wpaState("wlan0")
 		if wpa != "COMPLETED" && wpa != "NONE" {
 			startTime := time.Now().Unix()
-			log.Info(staticFields, wpa + ", timeout in " + strconv.FormatInt(wpaTimeout,10)  + " seconds")
+			log.Info(staticFields, wpa+", timeout in "+strconv.FormatInt(wpaTimeout, 10)+" seconds")
 			for {
 				if dontFallBackToAP == "true" || dontFallBackToAP == "True" {
 					log.Info(staticFields, "...dontFallBackToAP enabled...")
 					break
 				}
 				wpa = wpaState("wlan0")
-				if startTime + wpaTimeout < time.Now().Unix() {
+				if startTime+wpaTimeout < time.Now().Unix() {
 					log.Info(staticFields, "Timeout.")
 					signal <- "AP"
 					break
 				}
 				if wpa == "COMPLETED" {
-					log.Info(staticFields, wpa + " timeout aborted")
+					log.Info(staticFields, wpa+" timeout aborted")
 					break
 				}
 				time.Sleep(1 * time.Second)
@@ -205,7 +205,7 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 
 	for {
 		mode := <-signal
-		log.Info(staticFields, "Signal: " + mode)
+		log.Info(staticFields, "Signal: "+mode)
 		if mode == "AP" {
 			log.Info(staticFields, "-=-=-=- start Access Point -=-=-=-")
 			command.killIt("wpa_supplicant")
@@ -231,7 +231,7 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 					break
 				}
 			}
-			command.StartDnsmasq() //dnsmasq
+			command.StartAPDnsmasq() //dnsmasq
 		}
 		if mode == "CL" {
 			if wpaState("wlan0") != "NONE" {
@@ -250,6 +250,7 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 				}
 			}
 			command.RemoveApInterface()
+			command.StartCLDnsmasq()
 			command.StartWpaSupplicant()
 		}
 	}

@@ -60,8 +60,8 @@ func (c *Command) StartWpaSupplicant() {
 	go c.Runner.ProcessCmd("wpa_supplicant", cmd)
 }
 
-// StartDnsmasq starts dnsmasq.
-func (c *Command) StartDnsmasq() {
+// StartAPDnsmasq starts dnsmasq on AP mode.
+func (c *Command) StartAPDnsmasq() {
 	// hostapd is enabled, fire up dnsmasq
 	args := []string{
 		"--no-hosts", // Don't read the hostnames in /etc/hosts.
@@ -74,6 +74,21 @@ func (c *Command) StartDnsmasq() {
 		"--log-facility=-",
 		"--interface=uap0",
 		"--port=0",
+	}
+
+	cmd := exec.Command("dnsmasq", args...)
+	go c.Runner.ProcessCmd("dnsmasq", cmd)
+}
+
+// StartCLDnsmasq starts dnsmasq in CL mode.
+func (c *Command) StartCLDnsmasq() {
+	args := []string{
+		"--no-hosts", // Don't read the hostnames in /etc/hosts.
+		"--keep-in-foreground",
+		"--log-queries",
+		"--server=" + c.SetupCfg.DnsmasqCfg.Server,
+		"--log-facility=-",
+		"--interface=wlan0",
 	}
 
 	cmd := exec.Command("dnsmasq", args...)
