@@ -251,7 +251,7 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 			}
 			command.RemoveApInterface()
 			command.StartWpaSupplicant()
-			log.Info(staticFields, "... wait for wpa_supplicant to finish")
+			log.Info(staticFields, "... wait for wpa_supplicant to start")
 			for {
 				if wpaState("wlan0") != "NONE" {
 					log.Info(staticFields, "wpa_supplicant started")
