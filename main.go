@@ -8,10 +8,12 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/bhoriuchi/go-bunyan/bunyan"
 	"github.com/gorilla/handlers"
@@ -44,6 +46,7 @@ func main() {
 	//Todo: is a queue of 1 blocking wpa,hostapd,dnsmasq?
 	messages := make(chan iotwifi.CmdMessage, 1)
 	signal := make(chan string, 1)
+	statusChan := make(chan map[string]string, 1)
 
 	cfgUrl := setEnvIfEmpty("IOTWIFI_CFG", "cfg/wificfg.json")
 	port := setEnvIfEmpty("IOTWIFI_PORT", "8080")
@@ -123,12 +126,19 @@ func main() {
 
 		blog.Info("Connect Handler Got: ssid:|%s| psk:|redacted|", creds.Ssid)
 
-		go wpacfg.ConnectNetwork(creds)
+		go wpacfg.ConnectNetwork(creds, statusChan)
 
-		apiReturn := &ApiReturn{
-			Status:  "OK",
-			Message: "Connection",
-			Payload: "Attempting to connect to " + creds.Ssid,
+		var apiReturn *ApiReturn
+		select {
+		case status := <-statusChan:
+			apiReturn = &ApiReturn{
+				Status:  "OK",
+				Message: "Connection",
+				Payload: status,
+			}
+		case <-time.After(20 * time.Second):
+			err = fmt.Errorf("timeout connecting to network" + creds.Ssid)
+			retError(w, err)
 		}
 
 		ret, err := json.Marshal(apiReturn)

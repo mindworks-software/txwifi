@@ -110,7 +110,7 @@ func wpaState(iface string) string {
 }
 
 // ConnectNetwork connects to a wifi network
-func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) {
+func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials, statusChan chan map[string]string) {
 	connection := WpaConnection{}
 
 	wpa.Log.Info("-=-=- wait for wpa_supplicant to start -=-=-")
@@ -197,7 +197,8 @@ func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials) {
 
 				connection.Ssid = creds.Ssid
 				connection.State = state
-
+				status, _ := wpa.Status()
+				statusChan <- status
 				return
 			}
 		}
