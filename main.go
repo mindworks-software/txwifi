@@ -136,8 +136,10 @@ func main() {
 				Message: "Connection",
 				Payload: status,
 			}
-		case <-time.After(20 * time.Second):
-			err = fmt.Errorf("timeout connecting to network" + creds.Ssid)
+			signal <- "CL"
+
+		case <-time.After(30 * time.Second):
+			err = fmt.Errorf("timeout connecting to network " + creds.Ssid)
 			retError(w, err)
 		}
 
@@ -149,7 +151,7 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(ret)
-		signal <- "CL"
+		signal <- "CL_COMPLETE"
 	}
 
 	// scan for wifi networks
