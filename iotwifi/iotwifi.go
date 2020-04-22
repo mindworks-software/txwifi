@@ -260,7 +260,10 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 			command.StartCLDnsmasq()
 		}
 		if mode == "CL_COMPLETE" {
+			log.Info(staticFields, "##DM - CL-COMPLETE invoked")
+			log.Info(staticFields, "##DM - Will invoke RemoveApInterface()")
 			command.RemoveApInterface()
+			log.Info(staticFields, "##DM - Have invoked RemoveApInterface()")
 		}
 	}
 }

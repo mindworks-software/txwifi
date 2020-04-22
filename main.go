@@ -151,7 +151,10 @@ func main() {
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(ret)
-		signal <- "CL_COMPLETE"
+		blog.Info("##DM - Will wait 2 minutes and signal CL_COMPLETE")
+		time.AfterFunc(2*time.Minute, func() { signal <- "CL_COMPLETE" })
+		blog.Info("##DM - HAVE waited 2 minutes and HAVE signaled CL_COMPLETE")
+
 	}
 
 	// scan for wifi networks
