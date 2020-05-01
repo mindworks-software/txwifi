@@ -15,9 +15,11 @@ type Command struct {
 
 // RemoveApInterface removes the AP interface.
 func (c *Command) RemoveApInterface() {
+	c.Log.Info("##NG Removing AP interface")
 	cmd := exec.Command("iw", "dev", "uap0", "del")
 	cmd.Start()
 	cmd.Wait()
+	c.Log.Info("##NG Removed AP interface")
 }
 
 // ConfigureApInterface configured the AP interface.
@@ -105,6 +107,7 @@ func (c *Command) StartHostAPD() {
 }
 
 func (c *Command) killIt(it string) {
+	c.Log.Info("##NG Killing [" + it + "]")
 	args := []string{
 		it,
 	}
@@ -112,4 +115,5 @@ func (c *Command) killIt(it string) {
 	cmd := exec.Command("killall", args...)
 	cmdId := "killall " + it
 	c.Runner.ProcessCmd(cmdId, cmd)
+	c.Log.Info("##NG Killed [" + it + "]")
 }

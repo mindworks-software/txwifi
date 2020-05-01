@@ -152,8 +152,12 @@ func main() {
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(ret)
 		blog.Info("##DM - Will wait 2 minutes and signal CL_COMPLETE")
-		time.AfterFunc(2*time.Minute, func() { signal <- "CL_COMPLETE" })
-		blog.Info("##DM - HAVE waited 2 minutes and HAVE signaled CL_COMPLETE")
+		time.AfterFunc(2*time.Minute, func() {
+			blog.Info("##DM - HAVE waited 2 minutes and WILL signal CL_COMPLETE")
+			signal <- "CL_COMPLETE"
+			blog.Info("##DM - HAVE waited 2 minutes and HAVE signaled CL_COMPLETE")
+		})
+		blog.Info("##DM - HAVE returned status to client")
 
 	}
 
