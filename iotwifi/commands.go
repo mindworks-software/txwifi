@@ -55,7 +55,9 @@ func (c *Command) StartWpaSupplicant() {
 	args := []string{
 		"-Dnl80211",
 		"-iwlan0",
-		"-c" + c.SetupCfg.WpaSupplicantCfg.CfgFile,
+		"-B",
+		"-c",
+		c.SetupCfg.WpaSupplicantCfg.CfgFile,
 	}
 
 	cmd := exec.Command("wpa_supplicant", args...)

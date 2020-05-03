@@ -113,6 +113,13 @@ func wpaState(iface string) string {
 func (wpa *WpaCfg) ConnectNetwork(creds WpaCredentials, statusChan chan map[string]string) {
 	connection := WpaConnection{}
 
+	startSupplicantOut, err := exec.Command("wpa_supplicant", "-B", "-i", "wlan0", "-Dnl80211", "-c", wpa.WpaCfg.WpaSupplicantCfg.CfgFile).Output()
+	if err != nil {
+		wpa.Log.Warn(err.Error())
+	}
+	startSupplicantStatus := strings.TrimSpace(string(startSupplicantOut))
+
+	wpa.Log.Info("WPA start supplicant got: %s", startSupplicantStatus)
 	wpa.Log.Info("-=-=- wait for wpa_supplicant to start -=-=-")
 	for {
 		if wpaState("wlan0") != "NONE" {

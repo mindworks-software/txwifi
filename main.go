@@ -157,7 +157,7 @@ func main() {
 			signal <- "CL_COMPLETE"
 			blog.Info("##DM - HAVE waited 2 minutes and HAVE signaled CL_COMPLETE")
 		})
-		blog.Info("##DM - HAVE returned status to client")
+		blog.Info("##DM - HAVE returned status to client: [" + string(ret) + "]")
 
 	}
 
