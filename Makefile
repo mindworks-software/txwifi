@@ -1,6 +1,7 @@
+REGISTRY ?= docker-registry.dbld.tech
 IMAGE    ?= mindworks-software/iotwifi
 NAME     ?= txwifi
-VERSION  ?= 1.0.5
+VERSION  ?= 1.0.6
 
 all: build push
 

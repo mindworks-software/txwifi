@@ -231,7 +231,7 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 					break
 				}
 			}
-			command.StartAPDnsmasq() //dnsmasq
+			command.StartDnsmasq() //dnsmasq
 		}
 		if mode == "CL" {
 			if wpaState("wlan0") != "NONE" {
@@ -257,11 +257,12 @@ func RunWifi(log bunyan.Logger, messages chan CmdMessage, cfgLocation string, si
 					break
 				}
 			}
-			command.StartCLDnsmasq()
+			command.StartDnsmasq()
 		}
 		if mode == "CL_COMPLETE" {
 			log.Info(staticFields, "##DM - CL-COMPLETE invoked")
 			log.Info(staticFields, "##DM - Will invoke RemoveApInterface()")
+			command.killIt("hostapd")
 			command.RemoveApInterface()
 			log.Info(staticFields, "##DM - Have invoked RemoveApInterface()")
 		}

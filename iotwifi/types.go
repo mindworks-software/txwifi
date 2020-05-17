@@ -9,7 +9,7 @@ type SetupCfg struct {
 
 // DnsmasqCfg configures dnsmasq and is used by SetupCfg.
 type DnsmasqCfg struct {
-	Address     string `json:"address"`      // --address=/#/192.168.27.1",
+	//	Address     string `json:"address"`      // --address=/#/192.168.27.1",
 	Server      string `json:"server"`       // --server=8.8.8.8",
 	DhcpRange   string `json:"dhcp_range"`   // "--dhcp-range=192.168.27.100,192.168.27.150,1h",
 	VendorClass string `json:"vendor_class"` // "--dhcp-vendorclass=set:device,IoT",
