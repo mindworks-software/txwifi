@@ -71,7 +71,6 @@ func (c *Command) StartDnsmasq() {
 		"--no-hosts", // Don't read the hostnames in /etc/hosts.
 		"--keep-in-foreground",
 		"--log-queries",
-		"--server=" + c.SetupCfg.DnsmasqCfg.Server,
 		"--dhcp-range=" + c.SetupCfg.DnsmasqCfg.DhcpRange,
 		"--dhcp-vendorclass=" + c.SetupCfg.DnsmasqCfg.VendorClass,
 		"--dhcp-authoritative",
@@ -83,21 +82,6 @@ func (c *Command) StartDnsmasq() {
 	cmd := exec.Command("dnsmasq", args...)
 	go c.Runner.ProcessCmd("dnsmasq", cmd)
 }
-
-// StartCLDnsmasq starts dnsmasq in CL mode.
-//func (c *Command) StartCLDnsmasq() {
-//	args := []string{
-//		"--no-hosts", // Don't read the hostnames in /etc/hosts.
-//		"--keep-in-foreground",
-//		"--log-queries",
-//		"--server=" + c.SetupCfg.DnsmasqCfg.Server,
-//		"--log-facility=-",
-//		"--interface=wlan0",
-//	}
-//
-//	cmd := exec.Command("dnsmasq", args...)
-//	go c.Runner.ProcessCmd("dnsmasq", cmd)
-//}
 
 func (c *Command) StartHostAPD() {
 	args := []string{

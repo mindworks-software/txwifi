@@ -1,9 +1,8 @@
 {
     "dnsmasq_cfg": {
 	"dhcp_range": "192.168.27.100,192.168.27.150,1h",
-	"vendor_class": "set:device,IoT",
-	"server": "1.1.1.1"
-    },
+	"vendor_class": "set:device,IoT"
+	},
     "host_apd_cfg": {
 	"ip": "192.168.27.1",
 	"ssid": "iot-wifi-cfg-3",
